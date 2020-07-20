@@ -25,15 +25,17 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "generate-lib": "nx g @nrwl/react:lib",
-    "generate-component": "nx g @nrwl/react:component"
+    "generate-component": "nx g @nrwl/react:component",
+    "mock-platform": "dyson apps/platform/mocks"
   },
   "private": true,
   "dependencies": {
     "@zeit/next-sass": "1.0.1",
     "axios": "^0.19.2",
     "document-register-element": "1.13.1",
+    "dyson": "^3.0.2",
+    "dyson-generators": "^0.2.1",
     "next": "9.3.3",
-    "purify-ts": "^0.15.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.2.0",

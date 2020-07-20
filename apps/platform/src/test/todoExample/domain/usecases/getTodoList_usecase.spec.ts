@@ -1,6 +1,5 @@
 import { instance, mock, verify, when } from 'ts-mockito';
-import { NoParams, ServerFailure } from '@cinch-build/core';
-import { Left, Right } from 'purify-ts';
+import { NoParams, ServerException } from '@cinch-build/core';
 import { Todo } from '../../../../app/todoExample/domain/entities/todo';
 import { TodoRepository } from '../../../../app/todoExample/domain/repositories/todo_repository';
 import { GetTodoListUsecase } from '../../../../app/todoExample/domain/usecases/getTodoList_usecase';
@@ -19,17 +18,19 @@ describe('Get Todo List', () => {
   });
 
   it('should get todo list from repository', async () => {
-    when(MockTodoRepository.getList()).thenResolve(Right(tTodoList));
+    when(MockTodoRepository.getList()).thenResolve(tTodoList);
     const response = await usecase.call(new NoParams());
-    expect(response).toEqual(Right(tTodoList));
-    verify(MockTodoRepository.getList()).called();
+    expect(response).toEqual(tTodoList);
   });
 
   it('should error when get todo list from repository', async () => {
-    const error = new ServerFailure();
-    when(MockTodoRepository.getList()).thenResolve(Left(error));
-    const response = await usecase.call(new NoParams());
-    expect(response).toEqual(Left(error));
+    const error = new ServerException();
+    when(MockTodoRepository.getList()).thenReject(error);
+    try {
+      await usecase.call(new NoParams());
+    } catch (e) {
+      expect(e).toEqual(error);
+    }
     verify(MockTodoRepository.getList()).called();
   });
 });

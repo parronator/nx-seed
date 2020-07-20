@@ -1,12 +1,10 @@
 import { TodoRepository } from '../../../../app/todoExample/domain/repositories/todo_repository';
-import { Left, Right } from 'purify-ts';
 
 import {
   HttpResponse,
   HttpService,
-  ServerFailure,
+  ServerException,
   ServerNotFoundException,
-  ServerNotFoundFailure,
 } from '@cinch-build/core';
 
 import { Todo } from '../../../../app/todoExample/domain/entities/todo';
@@ -38,16 +36,18 @@ describe('Todo Repository', () => {
         new Promise((r) => r(tResponse))
       );
       const result = await repository.getList();
-      expect(result).toEqual(Right(tTodoList));
-      verify(MockHttpService.get('todos')).called();
+      expect(result).toEqual(tTodoList);
     });
 
     it('should error a ServerFailure when get list from HttpService', async () => {
       when(MockHttpService.get(anyString())).thenReturn(
-        new Promise((r, rj) => rj())
+        new Promise((r, rj) => rj(new ServerException()))
       );
-      const result = await repository.getList();
-      expect(result).toEqual(Left(new ServerFailure()));
+      try {
+        await repository.getList();
+      } catch (e) {
+        expect(e).toEqual(new ServerException());
+      }
       verify(MockHttpService.get('todos')).called();
     });
 
@@ -55,8 +55,12 @@ describe('Todo Repository', () => {
       when(MockHttpService.get(anyString())).thenThrow(
         new ServerNotFoundException()
       );
-      const result = await repository.getList();
-      expect(result).toEqual(Left(new ServerNotFoundFailure()));
+      try {
+        await repository.getList();
+      } catch (e) {
+        expect(e).toEqual(new ServerNotFoundException());
+      }
+
       verify(MockHttpService.get('todos')).called();
     });
   });

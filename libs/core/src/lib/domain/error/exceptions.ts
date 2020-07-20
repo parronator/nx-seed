@@ -7,3 +7,5 @@ export class ServerNotFoundException extends Error {}
 export class CacheException extends Error {}
 
 export class CreationException extends Error {}
+
+export class DomainException extends Error {}

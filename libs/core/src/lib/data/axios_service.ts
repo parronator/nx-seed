@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { HttpErrorResponse, HttpService } from '../..';
+import { HttpErrorResponse, HttpService } from '../domain/data/http_service';
 import {
   CreationException,
   ServerException,
   ServerNotFoundException,
-} from '@cinch-build/core';
+} from '../domain/error/exceptions';
 
 export class AxiosService implements HttpService {
   protected readonly instance: AxiosInstance;

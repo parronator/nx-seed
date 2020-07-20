@@ -1,12 +1,9 @@
-import { Either } from 'purify-ts/Either';
-import { Failure } from '@cinch-build/core';
-
 export abstract class UseCase<T, P> {
-  abstract async call(params: P): Promise<Either<Failure, T>>;
+  abstract async call(params: P): Promise<T>;
 }
 
 export abstract class SyncUseCase<T, P> {
-  abstract call(params: P): Either<Failure, T>;
+  abstract call(params: P): T;
 }
 
 export class Params {}

@@ -1,28 +1,14 @@
 import { TodoRepository } from '../../domain/repositories/todo_repository';
-import {
-  AxiosService,
-  Failure,
-  HttpService,
-  ServerFailure,
-  ServerNotFoundException,
-  ServerNotFoundFailure,
-} from '@cinch-build/core';
-import { Either, Left, Right } from 'purify-ts';
+import { HttpService } from '@cinch-build/core';
 import { Todo } from '../../domain/entities/todo';
 import { TodoHttpDTO } from '../models/todoHttp_dto';
+import { RemoteService } from '../../../shared/data/remote_service';
 
 export class TodoRepositoryImpl implements TodoRepository {
-  constructor(private httpService: HttpService = new AxiosService()) {}
+  constructor(private httpService: HttpService = new RemoteService()) {}
 
-  async getList(): Promise<Either<Failure, Todo[]>> {
-    try {
-      const response = await this.httpService.get('todos');
-      return Right(response.data.map((e) => TodoHttpDTO.fromJSON(e)));
-    } catch (e) {
-      if (e instanceof ServerNotFoundException) {
-        return Left(new ServerNotFoundFailure());
-      }
-      return Left(new ServerFailure());
-    }
+  async getList(): Promise<Todo[]> {
+    const response = await this.httpService.get('todos');
+    return response.data.map((e) => TodoHttpDTO.fromJSON(e));
   }
 }
