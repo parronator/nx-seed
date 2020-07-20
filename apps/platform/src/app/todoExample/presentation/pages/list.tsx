@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import './list.scss';
 import { GetTodoListUsecase } from '../../domain/usecases/getTodoList_usecase';
-import { NoParams, useGet } from '@cinch-build/core';
+import { NoParams, useUsecase } from '@cinch-build/core';
 import { Todo } from '../../domain/entities/todo';
+import {
+  CreateTodoParams,
+  CreateTodoUsecase,
+} from '../../domain/usecases/createTodo_usecase';
 
 export const TodoList = () => {
-  const [list, error] = useGet<Todo[]>(
+  const [list, error] = useUsecase<Todo[]>(
     new GetTodoListUsecase(),
     new NoParams(),
     []
+  );
+
+  const [item, errort] = useUsecase<Todo>(
+    new CreateTodoUsecase(),
+    new CreateTodoParams('example'),
+    undefined
   );
 
   return (

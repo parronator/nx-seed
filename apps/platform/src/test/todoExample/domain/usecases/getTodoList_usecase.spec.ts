@@ -21,6 +21,7 @@ describe('Get Todo List', () => {
     when(MockTodoRepository.getList()).thenResolve(tTodoList);
     const response = await usecase.call(new NoParams());
     expect(response).toEqual(tTodoList);
+    verify(MockTodoRepository.getList()).called();
   });
 
   it('should error when get todo list from repository', async () => {

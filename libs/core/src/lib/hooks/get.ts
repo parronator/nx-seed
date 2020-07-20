@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UseCase } from '../..';
 
-export function useGet<T>(
+export function useUsecase<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   usecase: UseCase<T, any>,
   params,

@@ -11,4 +11,9 @@ export class TodoRepositoryImpl implements TodoRepository {
     const response = await this.httpService.get('todos');
     return response.data.map((e) => TodoHttpDTO.fromJSON(e));
   }
+
+  async create(text: string): Promise<Todo> {
+    const response = await this.httpService.post('todos', { text });
+    return TodoHttpDTO.fromJSON(response.data);
+  }
 }

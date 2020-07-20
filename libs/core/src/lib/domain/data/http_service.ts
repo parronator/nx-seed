@@ -24,7 +24,7 @@ export abstract class HttpService {
   abstract post<T>(
     path: string,
     payload: T,
-    config: AxiosRequestConfig
+    config?: AxiosRequestConfig
   ): Promise<HttpResponse>;
 
   abstract put<T>(
